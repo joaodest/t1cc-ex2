@@ -64,10 +64,9 @@ public class Principal {
         try {
             Scanner scanner = new Scanner(System.in);
 
-            // Solicita ao usuário que insira os dados da Crypto
             System.out.print("Digite o ID da Crypto: ");
             int id = scanner.nextInt();
-            scanner.nextLine(); // Consumir a quebra de linha
+            scanner.nextLine(); 
             System.out.print("Digite a rede da Crypto: ");
             String rede = scanner.nextLine();
             System.out.print("Digite o símbolo da Crypto: ");
@@ -75,14 +74,12 @@ public class Principal {
             System.out.print("Digite o preço da Crypto: ");
             double price = scanner.nextDouble();
 
-            // Cria um novo objeto Crypto com os dados inseridos pelo usuário
+            
             Crypto crypto = new Crypto(id, rede, symbol, price);
 
-            // Chama o método insert da CryptoDao para inserir a Crypto no banco de dados
             CryptoDao cryptoDao = new CryptoDao();
             boolean inserido = cryptoDao.insert(crypto);
 
-            // Verifica se a inserção foi bem-sucedida
             if (inserido) {
                 System.out.println("Crypto inserida com sucesso.");
             } else {
@@ -111,12 +108,10 @@ public class Principal {
         try {
             Scanner scanner = new Scanner(System.in);
 
-            // Solicita ao usuário que insira o ID da Crypto que deseja atualizar
             System.out.print("Digite o ID da Crypto que deseja atualizar: ");
             int id = scanner.nextInt();
-            scanner.nextLine(); // Consumir a quebra de linha
+            scanner.nextLine(); 
 
-            // Solicita ao usuário que insira os novos dados da Crypto
             System.out.print("Digite a nova rede da Crypto: ");
             String rede = scanner.nextLine();
             System.out.print("Digite o novo símbolo da Crypto: ");
@@ -124,14 +119,11 @@ public class Principal {
             System.out.print("Digite o novo preço da Crypto: ");
             double price = scanner.nextDouble();
 
-            // Cria um novo objeto Crypto com os dados inseridos pelo usuário
             Crypto crypto = new Crypto(id, rede, symbol, price);
 
-            // Chama o método update da CryptoDao para atualizar a Crypto no banco de dados
             CryptoDao cryptoDao = new CryptoDao();
             boolean atualizado = cryptoDao.update(crypto);
 
-            // Verifica se a atualização foi bem-sucedida
             if (atualizado) {
                 System.out.println("Crypto atualizada com sucesso.");
             } else {
