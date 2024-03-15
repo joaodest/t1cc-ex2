@@ -1,7 +1,7 @@
 package model;
 
 public class Crypto {
-	private int id;
+	private int id ;
 	private String rede;
 	private String symbol;
 	private double price;
@@ -39,6 +39,6 @@ public class Crypto {
 	
 	@Override
 	public String toString() {
-		return "Crypto currency: [id= " + id + " ],\n [nome= " + rede + " ],\n [symbol= " + symbol + "],\n [price= $" + price + " ]";
+		return "Crypto [id= " + id + ", rede= " + rede + ", symbol= " + symbol + ", price= $" + price + " ]";
 	}
 }

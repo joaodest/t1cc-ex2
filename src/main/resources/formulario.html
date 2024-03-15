@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Criptomoedas</title>
+</head>
+<body>
+    <h2>Adicionar Criptomoeda</h2>
+    <form id="addCryptoForm">
+        <label for="id">ID:</label><br>
+        <input type="text" id="id" name="id"><br>
+        <label for="rede">Rede:</label><br>
+        <input type="text" id="rede" name="rede"><br>
+        <label for="symbol">Símbolo:</label><br>
+        <input type="text" id="symbol" name="symbol"><br>
+        <label for="price">Preço:</label><br>
+        <input type="text" id="price" name="price"><br><br>
+        <button type="button" onclick="addCrypto()">Adicionar Criptomoeda</button>
+    </form>
+
+    <h2>Alterar Criptomoeda</h2>
+    <form id="updateCryptoForm">
+        <label for="updateId">ID:</label><br>
+        <input type="text" id="updateId" name="updateId"><br>
+        <label for="updateRede">Rede:</label><br>
+        <input type="text" id="updateRede" name="updateRede"><br>
+        <label for="updateSymbol">Símbolo:</label><br>
+        <input type="text" id="updateSymbol" name="updateSymbol"><br>
+        <label for="updatePrice">Preço:</label><br>
+        <input type="text" id="updatePrice" name="updatePrice"><br><br>
+        <button type="button" onclick="updateCrypto()">Alterar Criptomoeda</button>
+    </form>
+
+    <h2>Excluir Criptomoeda</h2>
+    <form id="deleteCryptoForm">
+        <label for="deleteId">ID:</label><br>
+        <input type="text" id="deleteId" name="deleteId"><br><br>
+        <button type="button" onclick="deleteCrypto()">Excluir Criptomoeda</button>
+    </form>
+
+    <h2>Criptomoedas Cadastradas</h2>
+    <ul id="cryptoList"></ul>
+
+    <script>
+        function addCrypto() {
+            var xhr = new XMLHttpRequest();
+            var url = "http://localhost:6789/cryptos"; 
+            xhr.open("POST", url, true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 201) {
+                    console.log("Criptomoeda adicionada com sucesso.");
+                    getAllCryptos(); // Atualiza a lista após adicionar
+                }
+            };
+            var data = JSON.stringify({
+                "id": document.getElementById("id").value,
+                "rede": document.getElementById("rede").value,
+                "symbol": document.getElementById("symbol").value,
+                "price": document.getElementById("price").value
+            });
+            xhr.send(data);
+        }
+
+        function updateCrypto() {
+            var xhr = new XMLHttpRequest();
+            var url = "http://localhost:6789/cryptos/" + document.getElementById("updateId").value; 
+            xhr.open("PUT", url, true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    console.log("Criptomoeda atualizada com sucesso.");
+                    getAllCryptos(); 
+                }
+            };
+            var data = JSON.stringify({
+                "rede": document.getElementById("updateRede").value,
+                "symbol": document.getElementById("updateSymbol").value,
+                "price": document.getElementById("updatePrice").value
+            });
+            xhr.send(data);
+        }
+
+        function deleteCrypto() {
+            var xhr = new XMLHttpRequest();
+            var url = "http://localhost:6789/cryptos/" + document.getElementById("deleteId").value; 
+            xhr.open("DELETE", url, true);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    console.log("Criptomoeda excluída com sucesso.");
+                    getAllCryptos(); 
+                }
+            };
+            xhr.send();
+        }
+
+        function getAllCryptos() {
+            var xhr = new XMLHttpRequest();
+            var url = "http://localhost:6789/cryptos"; 
+            xhr.open("GET", url, true);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    var cryptos = JSON.parse(xhr.responseText);
+                    var cryptoListElement = document.getElementById("cryptoList");
+                    cryptoListElement.innerHTML = ''; // Limpa a lista atual
+                    cryptos.forEach(function(crypto) {
+                        var li = document.createElement("li");
+                        li.appendChild(document.createTextNode(crypto.id + " - " + crypto.symbol + " - " + crypto.price + ": $" + crypto.price));
+                        cryptoListElement.appendChild(li);
+                    });
+                }
+            };
+            xhr.send();
+        }
+
+        
+        window.onload = function() {
+            getAllCryptos();
+        };
+    </script>
+</body>
+</html>
